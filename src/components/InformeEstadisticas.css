@@ -1,0 +1,115 @@
+.estadisticas-panel {
+  margin-top: 20px;
+  border: 1px solid #d1d5db;
+  border-radius: 12px;
+  padding: 16px;
+  background: #fff;
+}
+
+.estadisticas-header {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.mes-label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 180px;
+}
+
+.estadisticas-panel .contenedor-tablas {
+  overflow-x: auto;
+  display: block;
+  clear: both;
+}
+
+.estadisticas-panel .tabla-alineada {
+  border-collapse: collapse;
+  border: 1px solid #000;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  font-size: 14px;
+  width: 100%;
+}
+
+.estadisticas-panel .tabla-alineada td,
+.estadisticas-panel .tabla-alineada th {
+  border: 1px solid #000;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+.estadisticas-panel .fila-45 {
+  height: 45px;
+}
+
+.estadisticas-panel .fila-45 td,
+.estadisticas-panel .fila-45 th {
+  height: 45px;
+  line-height: 45px;
+  padding: 0;
+  vertical-align: middle;
+}
+
+.estadisticas-panel .tabla-cabecera {
+  min-width: 1220px;
+}
+
+.estadisticas-panel .tabla-nombres {
+  width: 300px;
+  float: left;
+  margin-right: 0;
+  clear: both;
+}
+
+.estadisticas-panel .tabla-datos {
+  margin-left: 300px;
+  min-width: 840px;
+}
+
+.estadisticas-panel .tabla-datos td {
+  width: 35px;
+  text-align: center;
+}
+
+.estadisticas-panel .col-estrecha {
+  width: 35px !important;
+  height: 25px;
+  line-height: 25px;
+}
+
+.estadisticas-panel .col-nombres,
+.estadisticas-panel .tabla-nombres tbody td:first-child {
+  width: 300px;
+  text-align: left;
+  padding-left: 8px;
+}
+
+.estadisticas-panel .fila-total {
+  background-color: #f0f0f0;
+}
+
+.estadisticas-panel .tabla-separador {
+  margin: 16px 0;
+}
+
+.estadisticas-panel .tabla-separador th {
+  text-align: center;
+  padding: 10px;
+}
+
+@media (max-width: 900px) {
+  .estadisticas-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .mes-label {
+    min-width: 0;
+  }
+}
