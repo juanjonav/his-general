@@ -192,6 +192,51 @@ section {
   margin-top: 16px;
 }
 
+.login-card {
+  max-width: 520px;
+  margin: 40px auto;
+}
+
+.login-help {
+  margin: 4px 0 16px;
+  color: #4b5563;
+}
+
+.login-error {
+  color: #dc2626;
+  font-weight: 600;
+  margin: 12px 0 0;
+}
+
+.perfil-card {
+  margin-bottom: 16px;
+}
+
+.perfil-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 12px;
+}
+
+.perfil-label {
+  display: block;
+  font-size: 12px;
+  font-weight: 700;
+  color: #6b7280;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.perfil-mono {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 12px;
+}
+
+.perfil-error {
+  color: #b91c1c;
+  font-weight: 600;
+}
+
 @media (max-width: 768px) {
   #root {
     padding: 12px;

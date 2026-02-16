@@ -1,48 +1,90 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import './App.css'
 import FormularioPaciente from './components/FormularioPaciente.jsx'
+import AppNav from './components/AppNav.jsx'
+import useHashRoute from './hooks/useHashRoute.js'
+import Login from './components/Login.jsx'
+import { onAuthStateChanged, signOut } from 'firebase/auth'
+import { auth, db } from './services/firebase.js'
+import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
+import UsuarioPerfil from './components/UsuarioPerfil.jsx'
 
 const InformeEstadisticas = lazy(() => import('./components/InformeEstadisticas.jsx'))
 
-function getCurrentRoute() {
-  const hash = window.location.hash || '#/'
-  return hash === '#/estadisticas' ? 'estadisticas' : 'formulario'
-}
-
 function App() {
-  const [route, setRoute] = useState(getCurrentRoute)
+  const [user, setUser] = useState(null)
+
+  const { route, goTo } = useHashRoute()
+  const [authReady, setAuthReady] = useState(false)
+  const [perfilVisible, setPerfilVisible] = useState(false)
+  const [userDoc, setUserDoc] = useState(null)
+  const [perfilError, setPerfilError] = useState('')
 
   useEffect(() => {
-    const onHashChange = () => setRoute(getCurrentRoute())
-    window.addEventListener('hashchange', onHashChange)
-    return () => window.removeEventListener('hashchange', onHashChange)
-  }, [])
+    let active = true
+    const ensureUserDocument = async (firebaseUser) => {
+      const userRef = doc(db, 'usuarios', firebaseUser.uid)
+      const snapshot = await getDoc(userRef)
 
-  const goTo = (nextRoute) => {
-    const hash = nextRoute === 'estadisticas' ? '#/estadisticas' : '#/'
-    if (window.location.hash !== hash) {
-      window.location.hash = hash
-    } else {
-      setRoute(nextRoute)
+      if (!snapshot.exists()) {
+        await setDoc(userRef, {
+          nombre: firebaseUser.displayName || '',
+          email: firebaseUser.email || '',
+          hospitalId: '',
+          createdAt: serverTimestamp(),
+        })
+      }
+
+      const freshSnapshot = await getDoc(userRef)
+      if (active) {
+        setUserDoc(freshSnapshot.exists() ? freshSnapshot.data() : null)
+        setPerfilError('')
+      }
     }
+
+    const unsubscribe = onAuthStateChanged(auth, (firebaseUser) => {
+      setUser(firebaseUser)
+      setAuthReady(true)
+      if (firebaseUser) {
+        goTo('formulario')
+        ensureUserDocument(firebaseUser).catch((error) => {
+          console.error('Error asegurando usuario en Firestore:', error)
+          if (active) {
+            setPerfilError('No se pudo cargar el perfil.')
+          }
+        })
+      } else {
+        setUserDoc(null)
+        setPerfilError('')
+      }
+    })
+
+    return () => {
+      active = false
+      unsubscribe()
+    }
+  }, [goTo])
+
+  if (!authReady) {
+    return <section>Cargando sesión...</section>
+  }
+
+  if (!user) {
+    return <Login onSuccess={() => goTo('formulario')} />
   }
 
   return (
     <>
-      <section className="mb-5">
-        <div className="row">
-          <div className="col-md-2">
-            <button type="button" className="btn btn-primary btn-sm" onClick={() => goTo('formulario')}>
-              Ir a Formulario
-            </button>
-          </div>
-          <div className="col-md-2">
-            <button type="button" className="btn btn-secondary btn-sm" onClick={() => goTo('estadisticas')}>
-              Ver estadisticas
-            </button>
-          </div>
-        </div>
-      </section>
+      <AppNav
+        onGoTo={(nextRoute) => {
+          setPerfilVisible(false)
+          goTo(nextRoute)
+        }}
+        onOpenPerfil={() => setPerfilVisible(true)}
+        onSignOut={() => signOut(auth)}
+      />
+
+      {perfilVisible ? <UsuarioPerfil userAuth={user} userDoc={userDoc} error={perfilError} /> : null}
 
       {route === 'formulario' ? (
         <FormularioPaciente />
