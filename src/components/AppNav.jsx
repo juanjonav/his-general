@@ -13,11 +13,6 @@ export default function AppNav({ onGoTo, onOpenPerfil, onSignOut }) {
           </button>
         </div>
         <div className="col-md-2">
-          <button type="button" className="btn btn-secondary btn-sm" onClick={onOpenPerfil}>
-            Perfil
-          </button>
-        </div>
-        <div className="col-md-2">
           <button type="button" className="btn btn-danger btn-sm" onClick={onSignOut}>
             Cerrar sesion
           </button>
