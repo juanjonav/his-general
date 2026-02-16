@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import codigosCie from '../data/codigos_cie.json'
-import { generarExcelHis } from '../services/crearRegistro'
+import { generarExcelHis } from '../services/crearHis'
 import { generarExcelLista } from '../services/crearLista'
 
 const RESPONSABLES = {
@@ -69,22 +69,29 @@ export default function FormularioPaciente() {
   })
   const [paciente, setPaciente] = useState(initialPaciente)
   const [pacientes, setPacientes] = useState([])
+  const [isInitialized, setIsInitialized] = useState(false)
 
   useEffect(() => {
     const guardados = localStorage.getItem(PACIENTES_KEY)
-    if (!guardados) return
+    if (!guardados) {
+      setIsInitialized(true)
+      return
+    }
 
     try {
       const parsed = JSON.parse(guardados)
       if (Array.isArray(parsed)) setPacientes(parsed)
     } catch {
       setPacientes([])
+    } finally {
+      setIsInitialized(true)
     }
   }, [])
 
   useEffect(() => {
+    if (!isInitialized) return
     localStorage.setItem(PACIENTES_KEY, JSON.stringify(pacientes))
-  }, [pacientes])
+  }, [pacientes, isInitialized])
 
   useEffect(() => {
     if (!paciente.fecha) return
