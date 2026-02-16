@@ -108,8 +108,8 @@ function calcularRangoEdad(edad) {
 
 export default function FormularioPaciente() {
   const [encargado, setEncargado] = useState({
-    nombresApellidosResponsable: 'JESUS ROJAS POZO',
-    dniResponsable: '08388048',
+    nombresApellidosResponsable: '',
+    dniResponsable: '',
     mes: '',
   })
   const [paciente, setPaciente] = useState(initialPaciente)
@@ -317,6 +317,7 @@ export default function FormularioPaciente() {
               value={encargado.nombresApellidosResponsable}
               onChange={onEncargadoChange}
             >
+              <option value="">Seleccione</option>
               <option value="JESUS ROJAS POZO">Jesus Rojas Pozo</option>
               <option value="ERIKA GISELA CRUZ CAMPOS">Erika Gisela Cruz Campos</option>
               <option value="MARAVI SAAVEDRA LIUS ALBERTO">Luis Alberto Maravi Saavedra</option>

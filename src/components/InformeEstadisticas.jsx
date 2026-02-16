@@ -170,12 +170,13 @@ function TablaBloque({ titulo, totalTitulo, matrix }) {
 }
 
 export default function InformeEstadisticas() {
-  const [mes, setMes] = useState('01')
+  const [mes, setMes] = useState('')
   const [datosFirestore, setDatosFirestore] = useState({})
   const [cargandoMes, setCargandoMes] = useState(false)
   const [errorLectura, setErrorLectura] = useState('')
 
   useEffect(() => {
+    if (!mes) return
     let activa = true
 
     const cargarDatosDelMes = async () => {
@@ -242,6 +243,7 @@ export default function InformeEstadisticas() {
         <label htmlFor="mes-estadisticas" className="mes-label">
           Mes
           <select id="mes-estadisticas" value={mes} onChange={(e) => setMes(e.target.value)}>
+            <option value="">Seleccione mes</option>
             {meses.map((m) => (
               <option key={m.value} value={m.value}>{m.label}</option>
             ))}
