@@ -65,78 +65,102 @@ function TablaBloque({ titulo, totalTitulo, matrix }) {
   const totales = useMemo(() => obtenerTotalesColumnas(matrix), [matrix])
 
   return (
-    <div className="contenedor-tablas">
-      <table className="tabla-alineada tabla-cabecera">
-        <thead>
+    <div className="w-full overflow-x-auto border border-gray-300 rounded-lg shadow-sm">
+      <table className="w-full min-w-max border-collapse text-sm text-left">
+        <thead className="bg-gray-100 text-gray-700 font-semibold border-b border-gray-300">
           <tr>
-            <th rowSpan="4" className="col-nombres">CONDICION</th>
-            <th colSpan="24">{titulo}</th>
-            <th colSpan="3" rowSpan="3">TOTAL DE TAMIZAJES</th>
-            <th colSpan="3" rowSpan="3">PERSONAS VICTIMAS DE VIOLENCIA POLITICA</th>
+            <th rowSpan="4" className="border border-gray-300 px-4 py-2 sticky left-0 bg-gray-100 z-10 w-[300px] min-w-[300px]">
+              CONDICION
+            </th>
+            <th colSpan="24" className="border border-gray-300 px-2 py-1 text-center bg-blue-50">
+              {titulo}
+            </th>
+            <th colSpan="3" rowSpan="3" className="border border-gray-300 px-2 py-1 text-center bg-yellow-50">
+              TOTAL DE TAMIZAJES
+            </th>
+            <th colSpan="3" rowSpan="3" className="border border-gray-300 px-2 py-1 text-center bg-green-50">
+              PERSONAS VICTIMAS DE VIOLENCIA POLITICA
+            </th>
           </tr>
 
           <tr>
-            <th colSpan="8">NINO</th>
-            <th colSpan="4">ADOLESCENTE</th>
-            <th colSpan="4">JOVEN</th>
-            <th colSpan="4">ADULTO</th>
-            <th colSpan="4">ADULTO MAYOR</th>
+            <th colSpan="8" className="border border-gray-300 px-2 py-1 text-center">NINO</th>
+            <th colSpan="4" className="border border-gray-300 px-2 py-1 text-center">ADOLESCENTE</th>
+            <th colSpan="4" className="border border-gray-300 px-2 py-1 text-center">JOVEN</th>
+            <th colSpan="4" className="border border-gray-300 px-2 py-1 text-center">ADULTO</th>
+            <th colSpan="4" className="border border-gray-300 px-2 py-1 text-center">ADULTO MAYOR</th>
           </tr>
 
           <tr>
-            <th colSpan="2">00a - 02a</th>
-            <th colSpan="2">03a - 05a</th>
-            <th colSpan="2">06a - 09a</th>
-            <th colSpan="2">10a - 11a</th>
-            <th colSpan="2">12a - 14a</th>
-            <th colSpan="2">15a - 17a</th>
-            <th colSpan="2">18a - 24a</th>
-            <th colSpan="2">25a - 29a</th>
-            <th colSpan="2">30a - 39a</th>
-            <th colSpan="2">40a - 59a</th>
-            <th colSpan="2">60a - 79a</th>
-            <th colSpan="2">80a+</th>
+            <th colSpan="2" className="border border-gray-300 px-1 py-1 text-center text-xs">00a - 02a</th>
+            <th colSpan="2" className="border border-gray-300 px-1 py-1 text-center text-xs">03a - 05a</th>
+            <th colSpan="2" className="border border-gray-300 px-1 py-1 text-center text-xs">06a - 09a</th>
+            <th colSpan="2" className="border border-gray-300 px-1 py-1 text-center text-xs">10a - 11a</th>
+            <th colSpan="2" className="border border-gray-300 px-1 py-1 text-center text-xs">12a - 14a</th>
+            <th colSpan="2" className="border border-gray-300 px-1 py-1 text-center text-xs">15a - 17a</th>
+            <th colSpan="2" className="border border-gray-300 px-1 py-1 text-center text-xs">18a - 24a</th>
+            <th colSpan="2" className="border border-gray-300 px-1 py-1 text-center text-xs">25a - 29a</th>
+            <th colSpan="2" className="border border-gray-300 px-1 py-1 text-center text-xs">30a - 39a</th>
+            <th colSpan="2" className="border border-gray-300 px-1 py-1 text-center text-xs">40a - 59a</th>
+            <th colSpan="2" className="border border-gray-300 px-1 py-1 text-center text-xs">60a - 79a</th>
+            <th colSpan="2" className="border border-gray-300 px-1 py-1 text-center text-xs">80a+</th>
           </tr>
 
           <tr>
             {Array.from({ length: 24 }).map((_, i) => (
-              <th key={`h-${i}`} className="col-estrecha">{i % 2 === 0 ? 'M' : 'F'}</th>
+              <th key={`h-${i}`} className="border border-gray-300 px-1 py-1 text-center text-[10px] min-w-[35px] w-[35px]">
+                {i % 2 === 0 ? 'M' : 'F'}
+              </th>
             ))}
-            <th>Meta Anual</th>
-            <th>Avance Mes</th>
-            <th>Acum. Anual</th>
-            <th>F</th>
-            <th>M</th>
-            <th>TOTAL</th>
+            <th className="border border-gray-300 px-1 py-1 text-center text-[10px]">Meta Anual</th>
+            <th className="border border-gray-300 px-1 py-1 text-center text-[10px]">Avance Mes</th>
+            <th className="border border-gray-300 px-1 py-1 text-center text-[10px]">Acum. Anual</th>
+            <th className="border border-gray-300 px-1 py-1 text-center text-[10px]">F</th>
+            <th className="border border-gray-300 px-1 py-1 text-center text-[10px]">M</th>
+            <th className="border border-gray-300 px-1 py-1 text-center text-[10px]">TOTAL</th>
           </tr>
         </thead>
-      </table>
-
-      <table className="tabla-alineada tabla-nombres">
         <tbody>
-          <tr className="fila-45 fila-total">
-            <td><strong>{totalTitulo}</strong></td>
-          </tr>
-          {tamizajes.map((t) => (
-            <tr key={t.key} className="fila-45">
-              <td>{t.label}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <table className="tabla-alineada tabla-datos">
-        <tbody>
-          <tr className="fila-45 fila-total">
+          {/* Fila de Totales */}
+          <tr className="bg-gray-200 font-bold hover:bg-gray-300 transition-colors">
+            <td className="border border-gray-300 px-4 py-2 sticky left-0 bg-gray-200 z-10">
+              {totalTitulo}
+            </td>
             {totales.map((valor, idx) => (
-              <td key={`tot-${idx}`}>{valor}</td>
+              <td key={`tot-${idx}`} className="border border-gray-300 px-1 py-1 text-center text-xs">
+                {valor}
+              </td>
             ))}
+            {/* Celdas vacías para las últimas 6 columnas de totales si no hay datos calculados para ellas en 'totales' 
+                El array 'totales' viene de obtenerTotalesColumnas(matrix) que devuelve 24 columnas.
+                Faltan las 6 columnas de la derecha (Meta, Avance, Acum, F, M, Total).
+                Asumiré que deben estar vacías o calcularse, pero por ahora renderizo celdas vacías para mantener la estructura. */}
+            <td className="border border-gray-300 px-1 py-1"></td>
+            <td className="border border-gray-300 px-1 py-1"></td>
+            <td className="border border-gray-300 px-1 py-1"></td>
+            <td className="border border-gray-300 px-1 py-1"></td>
+            <td className="border border-gray-300 px-1 py-1"></td>
+            <td className="border border-gray-300 px-1 py-1"></td>
           </tr>
-          {matrix.map((fila, filaIndex) => (
-            <tr key={`f-${filaIndex}`} className="fila-45">
-              {fila.map((valor, colIndex) => (
-                <td key={`c-${filaIndex}-${colIndex}`}>{valor}</td>
+
+          {/* Filas de Datos */}
+          {tamizajes.map((t, filaIndex) => (
+            <tr key={t.key} className="hover:bg-gray-50 transition-colors text-gray-800">
+              <td className="border border-gray-300 px-4 py-2 sticky left-0 bg-white z-10 font-medium">
+                {t.label}
+              </td>
+              {matrix[filaIndex]?.map((valor, colIndex) => (
+                <td key={`c-${filaIndex}-${colIndex}`} className="border border-gray-300 px-1 py-1 text-center text-xs">
+                  {valor}
+                </td>
               ))}
+              {/* Celdas vacías para las columnas de totales extra, igual que arriba */}
+              <td className="border border-gray-300 px-1 py-1"></td>
+              <td className="border border-gray-300 px-1 py-1"></td>
+              <td className="border border-gray-300 px-1 py-1"></td>
+              <td className="border border-gray-300 px-1 py-1"></td>
+              <td className="border border-gray-300 px-1 py-1"></td>
+              <td className="border border-gray-300 px-1 py-1"></td>
             </tr>
           ))}
         </tbody>
