@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react'
+import { doc, increment, setDoc } from 'firebase/firestore'
 import codigosCie from '../data/codigos_cie.json'
 import { generarExcelHis } from '../services/crearHis'
 import { generarExcelLista } from '../services/crearLista'
+import { auth, db } from '../services/firebase.js'
 
 const RESPONSABLES = {
   "JESUS ROJAS POZO": "08388048",
@@ -19,6 +21,32 @@ const CIE_TAMIZAJE = {
   '06': '96150.06',
   '07': '96150.07',
   '08': '96150.08',
+}
+
+const DIC_MESES = {
+  Enero: '01',
+  Febrero: '02',
+  Marzo: '03',
+  Abril: '04',
+  Mayo: '05',
+  Junio: '06',
+  Julio: '07',
+  Agosto: '08',
+  Septiembre: '09',
+  Octubre: '10',
+  Noviembre: '11',
+  Diciembre: '12',
+}
+
+const DIC_TAMIZAJES = {
+  '01': 'Violencia',
+  '02': 'Alcohol y Drogas',
+  '03': 'Trastornos Depresivos',
+  '04': 'Psicosis',
+  '05': 'Habilidades Sociales',
+  '06': 'Problemas del Neurodesarrollo',
+  '07': 'Deterioro Cognitivo/Demencia',
+  '08': 'Trastorno de Comportamiento',
 }
 
 const PACIENTES_KEY = 'pacientes'
@@ -59,6 +87,23 @@ function calcularEdad(fechaNacimiento) {
   }
 
   return edad >= 0 ? String(edad) : ''
+}
+
+function calcularRangoEdad(edad) {
+  const edadNum = Number.parseInt(edad, 10)
+  if (Number.isNaN(edadNum)) return '00a-02a'
+  if (edadNum <= 2) return '00a-02a'
+  if (edadNum <= 5) return '03a-05a'
+  if (edadNum <= 9) return '06a-09a'
+  if (edadNum <= 11) return '10a-11a'
+  if (edadNum <= 14) return '12a-14a'
+  if (edadNum <= 17) return '15a-17a'
+  if (edadNum <= 24) return '18a-24a'
+  if (edadNum <= 29) return '25a-29a'
+  if (edadNum <= 39) return '30a-39a'
+  if (edadNum <= 59) return '40a-59a'
+  if (edadNum <= 79) return '60a-79a'
+  return '80a+'
 }
 
 export default function FormularioPaciente() {
@@ -194,6 +239,64 @@ export default function FormularioPaciente() {
     } catch (error) {
       console.error(error)
       alert('Error al generar Registro')
+    }
+  }
+
+  const onGuardarEstadisticas = async () => {
+    try {
+      const uid = auth.currentUser?.uid
+      if (!uid) {
+        alert('No hay usuario autenticado')
+        return
+      }
+
+      const mesSeleccionado = encargado.mes
+      const mes = DIC_MESES[mesSeleccionado]
+      if (!mes) {
+        alert('Por favor seleccione un mes')
+        return
+      }
+
+      if (!pacientes.length) {
+        alert('No hay pacientes en la tabla')
+        return
+      }
+
+      const docRef = doc(db, 'usuarios', uid, 'estadisticas', '2026', 'meses', mes)
+      const acumulado = {}
+
+      for (const p of pacientes) {
+        const tamizaje = DIC_TAMIZAJES[p.tamizaje]
+        const sexo = (p.sexo || '').trim()
+        const resultado = (p.Tamizajetipo || '').trim()
+
+        if (!tamizaje || !sexo) continue
+
+        const rangoEdad = calcularRangoEdad(p.edad)
+        const campoTotal = `${tamizaje}_${sexo}_${rangoEdad}_total`
+        const campoPositivo = `${tamizaje}_${sexo}_${rangoEdad}_positivo`
+
+        acumulado[campoTotal] = (acumulado[campoTotal] || 0) + 1
+        if (resultado === '+') {
+          acumulado[campoPositivo] = (acumulado[campoPositivo] || 0) + 1
+        }
+      }
+
+      const actualizacion = {}
+      Object.entries(acumulado).forEach(([campo, valor]) => {
+        actualizacion[campo] = increment(valor)
+      })
+
+      if (!Object.keys(actualizacion).length) {
+        alert('No hay datos válidos para guardar estadísticas')
+        return
+      }
+
+      await setDoc(docRef, actualizacion, { merge: true })
+      alert(`Estadísticas guardadas para ${mesSeleccionado}`)
+    } catch (error) {
+      console.error('Error al guardar estadísticas:', error)
+      alert(`Error al guardar estadísticas: ${error.message}`)
     }
   }
 
@@ -493,6 +596,7 @@ export default function FormularioPaciente() {
       <section className="mt-4 text-center">
         <button type="button" id="btnGenerarExcelHis" className="btn btn-secondary btn-sm" onClick={onGenerarHis}>Generar HIS</button>
         <button type="button" id="btnGenerarExcelTabla" className="btn btn-secondary btn-sm" onClick={onGenerarLista}>Generar Registro</button>
+        <button type="button" id="btnEscribirFirestore" className="btn btn-success btn-sm" onClick={onGuardarEstadisticas}>Guardar Estadisticas</button>
       </section>
     </div>
   )

@@ -1,6 +1,8 @@
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
+import { doc, getDoc } from 'firebase/firestore'
 import baseGeneral from '../data/tamizajes_base_general.json'
 import basePositivos from '../data/tamizajes_base_positivos.json'
+import { auth, db } from '../services/firebase.js'
 import './InformeEstadisticas.css'
 
 const tamizajes = [
@@ -145,9 +147,69 @@ function TablaBloque({ titulo, totalTitulo, matrix }) {
 
 export default function InformeEstadisticas() {
   const [mes, setMes] = useState('01')
+  const [datosFirestore, setDatosFirestore] = useState({})
+  const [cargandoMes, setCargandoMes] = useState(false)
+  const [errorLectura, setErrorLectura] = useState('')
 
-  const matrizGeneral = useMemo(() => obtenerMatriz(baseGeneral, 'total'), [])
-  const matrizPositivos = useMemo(() => obtenerMatriz(basePositivos, 'positivo'), [])
+  useEffect(() => {
+    let activa = true
+
+    const cargarDatosDelMes = async () => {
+      try {
+        const uid = auth.currentUser?.uid
+        if (!uid) {
+          if (activa) {
+            setDatosFirestore({})
+            setErrorLectura('No hay usuario autenticado')
+          }
+          return
+        }
+
+        setCargandoMes(true)
+        setErrorLectura('')
+
+        const ref = doc(db, 'usuarios', uid, 'estadisticas', '2026', 'meses', mes)
+        const snap = await getDoc(ref)
+
+        if (!activa) return
+        setDatosFirestore(snap.exists() ? snap.data() : {})
+      } catch (error) {
+        console.error('Error leyendo estadísticas:', error)
+        if (activa) {
+          setDatosFirestore({})
+          setErrorLectura('No se pudo leer las estadísticas del mes seleccionado')
+        }
+      } finally {
+        if (activa) {
+          setCargandoMes(false)
+        }
+      }
+    }
+
+    cargarDatosDelMes()
+
+    return () => {
+      activa = false
+    }
+  }, [mes])
+
+  const datosGeneralFusionados = useMemo(
+    () => ({ ...baseGeneral, ...datosFirestore }),
+    [datosFirestore],
+  )
+  const datosPositivosFusionados = useMemo(
+    () => ({ ...basePositivos, ...datosFirestore }),
+    [datosFirestore],
+  )
+
+  const matrizGeneral = useMemo(
+    () => obtenerMatriz(datosGeneralFusionados, 'total'),
+    [datosGeneralFusionados],
+  )
+  const matrizPositivos = useMemo(
+    () => obtenerMatriz(datosPositivosFusionados, 'positivo'),
+    [datosPositivosFusionados],
+  )
 
   return (
     <section className="estadisticas-panel">
@@ -162,6 +224,8 @@ export default function InformeEstadisticas() {
           </select>
         </label>
       </div>
+      {cargandoMes ? <p>Cargando datos del mes...</p> : null}
+      {errorLectura ? <p>{errorLectura}</p> : null}
 
       <TablaBloque
         titulo="TOTAL DE TAMIZAJES"
