@@ -33,7 +33,7 @@
   box-sizing: border-box;
   font-family: Arial, sans-serif;
   font-size: 14px;
-  width: 100%;
+  width: auto;
 }
 
 .estadisticas-panel .tabla-alineada td,
@@ -57,6 +57,7 @@
 }
 
 .estadisticas-panel .tabla-cabecera {
+  width: 100%;
   min-width: 1220px;
 }
 
@@ -69,6 +70,8 @@
 
 .estadisticas-panel .tabla-datos {
   margin-left: 300px;
+  float: none;
+  width: auto;
   min-width: 840px;
 }
 
@@ -95,6 +98,7 @@
 }
 
 .estadisticas-panel .tabla-separador {
+  width: 100%;
   margin: 16px 0;
 }
 
