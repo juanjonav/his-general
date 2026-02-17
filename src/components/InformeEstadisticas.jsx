@@ -3,6 +3,7 @@ import { doc, getDoc } from 'firebase/firestore'
 import baseGeneral from '../data/tamizajes_base_general.json'
 import basePositivos from '../data/tamizajes_base_positivos.json'
 import { auth, db } from '../services/firebase.js'
+import { generarExcelInforme } from '../services/crearInforme.js'
 import './InformeEstadisticas.css'
 
 const tamizajes = [
@@ -236,6 +237,19 @@ export default function InformeEstadisticas() {
     [datosPositivosFusionados],
   )
 
+  const onGenerarExcel = async () => {
+    try {
+      if (!mes) {
+        alert('Por favor seleccione un mes para generar el informe')
+        return
+      }
+      await generarExcelInforme(matrizGeneral, matrizPositivos)
+    } catch (error) {
+      console.error('Error al generar Excel:', error)
+      alert('Error al generar el informe Excel')
+    }
+  }
+
   return (
     <section className="estadisticas-panel">
       <div className="estadisticas-header">
@@ -272,6 +286,16 @@ export default function InformeEstadisticas() {
         totalTitulo="TOTAL DE TAMIZAJES POSITIVOS"
         matrix={matrizPositivos}
       />
+
+      <div className="mt-8 mb-4 text-center">
+        <button
+          type="button"
+          className="bg-green-600 hover:bg-green-700 text-white font-bold py-2 px-4 rounded shadow-lg transition-colors flex items-center justify-center mx-auto gap-2"
+          onClick={onGenerarExcel}
+        >
+          <span>Descargar Informe Excel</span>
+        </button>
+      </div>
     </section>
   )
 }

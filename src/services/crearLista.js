@@ -21,7 +21,7 @@ export async function generarExcelLista({ pacientes, encargado }) {
   }
 
   const workbook = new ExcelJS.Workbook()
-  const response = await fetch('https://juanjonav.github.io/HIS/Plantillas/lista.xlsx')
+  const response = await fetch('https://juanjonav.github.io/DocsPlantilla/lista.xlsx')
   const arrayBuffer = await response.arrayBuffer()
   await workbook.xlsx.load(arrayBuffer)
 

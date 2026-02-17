@@ -21,7 +21,7 @@ export async function generarExcelHis({ pacientes, encargado }) {
   }
 
   const workbook = new ExcelJS.Workbook()
-  const response = await fetch('https://juanjonav.github.io/HIS/Plantillas/HIS2025.xlsx')
+  const response = await fetch('https://juanjonav.github.io/DocsPlantilla/HIS2025.xlsx')
   const arrayBuffer = await response.arrayBuffer()
   await workbook.xlsx.load(arrayBuffer)
 
