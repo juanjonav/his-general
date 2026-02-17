@@ -26,32 +26,12 @@ export async function generarExcelInforme(matrizGeneral, matrizPositivos) {
     const hoja = workbook.getWorksheet('Hoja1')
 
     for (let i = 0; i < matrizGeneral.length; i++) {
+        const row = hoja.getRow(11 + i)
         for (let j = 0; j < matrizGeneral[i].length; j++) {
-            hoja.getCell(`H${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`I${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`J${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`K${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`L${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`M${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`N${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`O${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`P${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`Q${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`R${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`S${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`T${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`U${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`V${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`W${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`X${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`Y${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`Z${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`AA${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`AB${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`AC${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`AD${i + 11}`).value = matrizGeneral[i][j] || ''
-            hoja.getCell(`AE${i + 11}`).value = matrizGeneral[i][j] || ''
+            // La columna H es la numero 8. j=0 -> columna 8
+            row.getCell(8 + j).value = matrizGeneral[i][j] || 0
         }
+        row.commit()
     }
 
 
@@ -62,32 +42,12 @@ export async function generarExcelInforme(matrizGeneral, matrizPositivos) {
     //positivos Hi a AEi por fila
     //hoja.getCell('H21').value = '' || ''
     for (let i = 0; i < matrizPositivos.length; i++) {
+        const row = hoja.getRow(21 + i)
         for (let j = 0; j < matrizPositivos[i].length; j++) {
-            hoja.getCell(`H${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`I${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`J${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`K${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`L${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`M${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`N${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`O${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`P${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`Q${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`R${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`S${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`T${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`U${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`V${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`W${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`X${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`Y${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`Z${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`AA${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`AB${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`AC${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`AD${i + 21}`).value = matrizPositivos[i][j] || ''
-            hoja.getCell(`AE${i + 21}`).value = matrizPositivos[i][j] || ''
+            // La columna H es la numero 8. j=0 -> columna 8
+            row.getCell(8 + j).value = matrizPositivos[i][j] || 0
         }
+        row.commit()
     }
 
     await descargarWorkbook(workbook, 'nuevo_INFORMEMENSUAL2026.xlsx')
