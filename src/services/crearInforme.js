@@ -15,8 +15,6 @@ function descargarWorkbook(workbook, fileName) {
 }
 //obtener los datos dinamicos de InformeEstadisticas.jsx general y positivos
 //matrizGeneral
-
-//matrizPositivos
 export async function generarExcelInforme(matrizGeneral, matrizPositivos) {
     const workbook = new ExcelJS.Workbook()
     const response = await fetch('https://juanjonav.github.io/DocsPlantilla/INFORMEMENSUAL2026.xlsx')
@@ -42,7 +40,17 @@ export async function generarExcelInforme(matrizGeneral, matrizPositivos) {
     //positivos Hi a AEi por fila
     //hoja.getCell('H21').value = '' || ''
     for (let i = 0; i < matrizPositivos.length; i++) {
-        const row = hoja.getRow(21 + i)
+        let rowNumber;
+        if (i < 3) {
+            // Indices 0, 1, 2 correspondes to rows 21, 22, 23
+            rowNumber = 21 + i;
+        } else {
+            // Indices 3, 4, ... correspondes to rows 26, 27, ...
+            // i=3 -> 26. 26 = 23 + 3. So rowNumber = 23 + i
+            rowNumber = 23 + i;
+        }
+
+        const row = hoja.getRow(rowNumber)
         for (let j = 0; j < matrizPositivos[i].length; j++) {
             // La columna H es la numero 8. j=0 -> columna 8
             row.getCell(8 + j).value = matrizPositivos[i][j] || 0

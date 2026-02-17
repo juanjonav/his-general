@@ -11,7 +11,6 @@ const tamizajes = [
   { label: 'TRASTORNO DEPRESIVO', key: 'Trastornos Depresivos' },
   { label: 'ALCOHOL Y DROGAS', key: 'Alcohol y Drogas' },
   { label: 'PSICOSIS', key: 'Psicosis' },
-  { label: 'HABILIDADES SOCIALES', key: 'Habilidades Sociales' },
   { label: 'PROBLEMAS DEL NEURODESARROLLO', key: 'Problemas del Neurodesarrollo' },
   { label: 'DETERIORO COGNITIVO - DEMENCIA', key: 'Deterioro Cognitivo/Demencia' },
   { label: 'TRASTORNO DE COMPORTAMIENTO', key: 'Trastorno de Comportamiento' },
