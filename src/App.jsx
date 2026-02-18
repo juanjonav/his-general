@@ -29,6 +29,7 @@ function App() {
         await setDoc(userRef, {
           nombre: firebaseUser.displayName || '',
           email: firebaseUser.email || '',
+          dni: '',
           hospitalId: '',
           createdAt: serverTimestamp(),
         })
