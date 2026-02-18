@@ -7,7 +7,7 @@ import Login from './components/Login.jsx'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth, db } from './services/firebase.js'
 import { doc, getDoc, serverTimestamp, setDoc } from 'firebase/firestore'
-import UsuarioPerfil from './components/UsuarioPerfil.jsx'
+import PerfilCuenta from './components/PerfilCuenta.jsx'
 
 const InformeEstadisticas = lazy(() => import('./components/InformeEstadisticas.jsx'))
 
@@ -45,7 +45,6 @@ function App() {
       setUser(firebaseUser)
       setAuthReady(true)
       if (firebaseUser) {
-        goTo('formulario')
         ensureUserDocument(firebaseUser).catch((error) => {
           console.error('Error asegurando usuario en Firestore:', error)
           if (active) {
@@ -78,20 +77,21 @@ function App() {
         hospital={userDoc?.hospitalId || 'Hospital no asignado'}
         activeRoute={route}
         onGoTo={(nextRoute) => goTo(nextRoute)}
-        onOpenPerfil={() => goTo('estadisticas')}
+        onOpenPerfil={() => goTo('perfil')}
         onSignOut={() => signOut(auth)}
       />
 
-      {route === 'formulario' ? (
-        <FormularioPaciente userAuth={user} userDoc={userDoc} />
-      ) : (
-        <>
-          <UsuarioPerfil userAuth={user} userDoc={userDoc} error={perfilError} />
-          <Suspense fallback={<section>Cargando informe...</section>}>
-            <InformeEstadisticas />
-          </Suspense>
-        </>
-      )}
+      {route === 'formulario' ? <FormularioPaciente userAuth={user} userDoc={userDoc} /> : null}
+
+      {route === 'estadisticas' ? (
+        <Suspense fallback={<section>Cargando informe...</section>}>
+          <InformeEstadisticas />
+        </Suspense>
+      ) : null}
+
+      {route === 'perfil' ? (
+        <PerfilCuenta userAuth={user} userDoc={userDoc} error={perfilError} />
+      ) : null}
     </>
   )
 }

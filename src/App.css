@@ -216,6 +216,11 @@ select:focus {
   height: 20px;
 }
 
+.perfil-dropdown-trigger.is-active {
+  background: #ffffff;
+  border-color: #ffffff;
+}
+
 .perfil-dropdown-menu {
   position: absolute;
   top: calc(100% + 8px);
@@ -355,6 +360,36 @@ section {
   font-weight: 600;
 }
 
+.perfil-page h2 {
+  margin-bottom: 12px;
+}
+
+.perfil-opciones {
+  display: grid;
+  grid-template-columns: repeat(1, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.perfil-opcion-card {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.perfil-opcion-card h3 {
+  margin: 0 0 6px;
+}
+
+.perfil-opcion-help {
+  margin: 0 0 12px;
+  color: #4b5563;
+}
+
+.perfil-opcion-actions {
+  display: flex;
+  gap: 8px;
+}
+
 .encargado-grid {
   display: grid;
   grid-template-columns: repeat(12, minmax(0, 1fr));
@@ -426,5 +461,9 @@ section {
   .encargado-nombre,
   .encargado-dni {
     grid-column: auto;
+  }
+
+  .perfil-opcion-actions {
+    flex-wrap: wrap;
   }
 }

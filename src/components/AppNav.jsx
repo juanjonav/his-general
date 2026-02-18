@@ -23,7 +23,7 @@ export default function AppNav({ hospital, activeRoute, onGoTo, onOpenPerfil, on
         </button>
 
         <details className="perfil-dropdown">
-          <summary className="perfil-dropdown-trigger" aria-label="Perfil">
+          <summary className={`perfil-dropdown-trigger ${activeRoute === 'perfil' ? 'is-active' : ''}`} aria-label="Perfil">
             <img src="/usuario.svg" alt="Perfil" />
           </summary>
 

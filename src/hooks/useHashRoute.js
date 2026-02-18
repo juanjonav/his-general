@@ -2,7 +2,9 @@ import { useCallback, useEffect, useState } from 'react'
 
 function getCurrentRoute() {
   const hash = window.location.hash || '#/'
-  return hash === '#/estadisticas' ? 'estadisticas' : 'formulario'
+  if (hash === '#/estadisticas') return 'estadisticas'
+  if (hash === '#/perfil') return 'perfil'
+  return 'formulario'
 }
 
 export default function useHashRoute() {
@@ -15,7 +17,12 @@ export default function useHashRoute() {
   }, [])
 
   const goTo = useCallback((nextRoute) => {
-    const hash = nextRoute === 'estadisticas' ? '#/estadisticas' : '#/'
+    const hashMap = {
+      formulario: '#/',
+      estadisticas: '#/estadisticas',
+      perfil: '#/perfil',
+    }
+    const hash = hashMap[nextRoute] || '#/'
     if (window.location.hash !== hash) {
       window.location.hash = hash
     } else {
