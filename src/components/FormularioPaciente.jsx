@@ -170,6 +170,16 @@ export default function FormularioPaciente() {
 
   const onPacienteChange = (e) => {
     const { name, value } = e.target
+
+    if (name === 'sexo') {
+      if (value === 'M') {
+        setPaciente((prev) => ({ ...prev, sexo: value, gestante: '' }))
+      } else {
+        setPaciente((prev) => ({ ...prev, sexo: value }))
+      }
+      return
+    }
+
     setPaciente((prev) => ({ ...prev, [name]: value }))
   }
 
@@ -216,6 +226,39 @@ export default function FormularioPaciente() {
   }
 
   const eliminarPaciente = (index) => {
+    setPacientes((prev) => prev.filter((_, i) => i !== index))
+  }
+
+  const editarPaciente = (index) => {
+    const pacienteAEditar = pacientes[index]
+    const diagnosticos = pacienteAEditar.diagnosticos.split(',,,').map((d) => d.trim())
+    const codigosCIE = pacienteAEditar.codigosCIE.split(',,,').map((c) => c.trim())
+
+    setPaciente({
+      nombresApellidos: pacienteAEditar.nombresApellidos || '',
+      edad: pacienteAEditar.edad || '',
+      dia: pacienteAEditar.dia || '',
+      numeroCita: pacienteAEditar.numeroCita || '',
+      fecha: pacienteAEditar.fecha || '',
+      dni: pacienteAEditar.dni || '',
+      financiadorSalud: pacienteAEditar.financiadorSalud || '',
+      etnia: pacienteAEditar.etnia || '',
+      tamizaje: pacienteAEditar.tamizaje || '',
+      distrito: pacienteAEditar.distrito || '',
+      CentroPoblado: pacienteAEditar.CentroPoblado || '',
+      sexo: pacienteAEditar.sexo || '',
+      gestante: pacienteAEditar.gestante || '',
+      tamizajeTipo: pacienteAEditar.Tamizajetipo || '',
+      diagnostico1: diagnosticos[0] || '',
+      cie1: codigosCIE[0] || '',
+      diagnostico2: diagnosticos[1] || '',
+      cie2: codigosCIE[1] || '',
+      diagnostico3: diagnosticos[2] || '',
+      cie3: codigosCIE[2] || '',
+      Direccion: pacienteAEditar.Direccion || '',
+      Telefono: pacienteAEditar.Telefono || '',
+    })
+
     setPacientes((prev) => prev.filter((_, i) => i !== index))
   }
 
@@ -453,7 +496,7 @@ export default function FormularioPaciente() {
 
           <div className="col-md-2">
             <label htmlFor="gestante" className="form-label">Gestante/Puerpera</label>
-            <select id="gestante" className="form-select form-select-sm" name="gestante" value={paciente.gestante} onChange={onPacienteChange}>
+            <select id="gestante" className="form-select form-select-sm" name="gestante" value={paciente.gestante} onChange={onPacienteChange} disabled={paciente.sexo !== 'F'}>
               <option value="">Seleccione</option>
               <option value="GESTANTE">GESTANTE</option>
               <option value="PUERPERA">PUERPERA</option>
@@ -580,6 +623,9 @@ export default function FormularioPaciente() {
                 <td>{item.Telefono}</td>
                 <td>{item.gestante}</td>
                 <td>
+                  <button type="button" className="btn btn-sm btn-warning me-2" onClick={() => editarPaciente(index)}>
+                    Editar
+                  </button>
                   <button type="button" className="btn btn-sm btn-danger" onClick={() => eliminarPaciente(index)}>
                     Eliminar
                   </button>
