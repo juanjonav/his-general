@@ -27,7 +27,6 @@ export async function generarExcelHis({ pacientes, encargado }) {
 
   const hoja = workbook.getWorksheet('Hoja1')
   const textoPlano = 'NOMBRES Y APELLIDOS PACIENTE: '
-
   for (let i = 0; i < Math.min(pacientes.length, 25); i += 1) {
     const p = pacientes[i]
     const diagnosticos = (p.diagnosticos || '').split(',,,').map((d) => d.trim())
@@ -64,6 +63,7 @@ export async function generarExcelHis({ pacientes, encargado }) {
   hoja.getCell('X7').value = encargado.nombresApellidosResponsable || ''
   hoja.getCell('U7').value = encargado.dniResponsable || ''
   hoja.getCell('C7').value = encargado.mes || ''
+  hoja.getCell('D7').value = encargado.hospital || ''
 
   await descargarWorkbook(workbook, 'nuevo_HIS.xlsx')
 }
