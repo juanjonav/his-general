@@ -212,10 +212,18 @@ section {
   margin-bottom: 16px;
 }
 
-.perfil-grid {
+.perfil-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 12px;
+}
+
+.perfil-item p {
+  margin: 4px 0 0;
+}
+
+.perfil-row + .perfil-item {
+  margin-top: 12px;
 }
 
 .perfil-label {
@@ -237,6 +245,36 @@ section {
   font-weight: 600;
 }
 
+.encargado-grid {
+  display: grid;
+  grid-template-columns: repeat(12, minmax(0, 1fr));
+  gap: 12px;
+  align-items: end;
+}
+
+.encargado-hospital {
+  grid-column: span 9;
+}
+
+.encargado-hospital-value {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.15;
+}
+
+.encargado-mes {
+  grid-column: span 3;
+}
+
+.encargado-nombre {
+  grid-column: span 8;
+}
+
+.encargado-dni {
+  grid-column: span 4;
+}
+
 @media (max-width: 768px) {
   #root {
     padding: 12px;
@@ -249,5 +287,20 @@ section {
 
   .row {
     gap: 10px;
+  }
+
+  .perfil-row {
+    grid-template-columns: 1fr;
+  }
+
+  .encargado-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .encargado-hospital,
+  .encargado-mes,
+  .encargado-nombre,
+  .encargado-dni {
+    grid-column: auto;
   }
 }

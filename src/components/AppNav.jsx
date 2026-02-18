@@ -1,4 +1,4 @@
-export default function AppNav({ onGoTo, onOpenPerfil, onSignOut }) {
+export default function AppNav({ onGoTo, onSignOut }) {
   return (
     <section className="mb-5">
       <div className="row">

@@ -5,13 +5,6 @@ import { generarExcelHis } from '../services/crearHis'
 import { generarExcelLista } from '../services/crearLista'
 import { auth, db } from '../services/firebase.js'
 
-const RESPONSABLES = {
-  "JESUS ROJAS POZO": "08388048",
-  "ERIKA GISELA CRUZ CAMPOS": "42597775",
-  "MARAVI SAAVEDRA LIUS ALBERTO": "45515386",
-  "VERDE GONZALES HEGIDIO": "22498733",
-}
-
 const CIE_TAMIZAJE = {
   '01': '96150.01',
   '02': '96150.02',
@@ -106,8 +99,9 @@ function calcularRangoEdad(edad) {
   return '80a+'
 }
 
-export default function FormularioPaciente() {
+export default function FormularioPaciente({ userAuth, userDoc }) {
   const [encargado, setEncargado] = useState({
+    hospital: '',
     nombresApellidosResponsable: '',
     dniResponsable: '',
     mes: '',
@@ -153,18 +147,17 @@ export default function FormularioPaciente() {
     setPaciente((prev) => ({ ...prev, cie1, cie2, cie3 }))
   }, [paciente.tamizaje, paciente.tamizajeTipo])
 
+  useEffect(() => {
+    setEncargado((prev) => ({
+      ...prev,
+      hospital: userDoc?.hospitalId || '',
+      nombresApellidosResponsable: userDoc?.nombre || userAuth?.displayName || '',
+      dniResponsable: userDoc?.dni || userAuth?.dni || '',
+    }))
+  }, [userAuth, userDoc])
+
   const onEncargadoChange = (e) => {
     const { name, value } = e.target
-
-    if (name === 'nombresApellidosResponsable') {
-      setEncargado((prev) => ({
-        ...prev,
-        nombresApellidosResponsable: value,
-        dniResponsable: RESPONSABLES[value] || '',
-      }))
-      return
-    }
-
     setEncargado((prev) => ({ ...prev, [name]: value }))
   }
 
@@ -346,42 +339,14 @@ export default function FormularioPaciente() {
   return (
     <div>
       <form id="formularioEncargado" className="mb-5">
-        <h3>responsable de la atencion</h3>
+        <h2>Responsable de la atencion</h2>
 
-        <div className="row g-3">
-          <div className="col-md-4">
-            <label htmlFor="nombresApellidosResponsable" className="form-label">
-              Nombres y Apellidos del responsable
-            </label>
-            <select
-              id="nombresApellidosResponsable"
-              className="form-select form-select-sm"
-              name="nombresApellidosResponsable"
-              value={encargado.nombresApellidosResponsable}
-              onChange={onEncargadoChange}
-            >
-              <option value="">Seleccione</option>
-              <option value="JESUS ROJAS POZO">Jesus Rojas Pozo</option>
-              <option value="ERIKA GISELA CRUZ CAMPOS">Erika Gisela Cruz Campos</option>
-              <option value="MARAVI SAAVEDRA LIUS ALBERTO">Luis Alberto Maravi Saavedra</option>
-              <option value="VERDE GONZALES HEGIDIO">Hegidio Verde Gonzales</option>
-            </select>
+        <div className="encargado-grid">
+          <div className="encargado-hospital">
+            <p className="encargado-hospital-value">{encargado.hospital || 'No asignado'}</p>
           </div>
 
-          <div className="col-md-4">
-            <label htmlFor="dniResponsable" className="form-label">DNI</label>
-            <input
-              type="text"
-              id="dniResponsable"
-              className="form-control form-control-sm"
-              name="dniResponsable"
-              value={encargado.dniResponsable}
-              readOnly
-            />
-          </div>
-
-          <div className="espaciovacio col-1" />
-          <div className="mes col-md-2">
+          <div className="encargado-mes">
             <label htmlFor="mes" className="form-label">Mes</label>
             <select
               name="mes"
@@ -404,6 +369,32 @@ export default function FormularioPaciente() {
               <option value="Noviembre">Noviembre</option>
               <option value="Diciembre">Diciembre</option>
             </select>
+          </div>
+
+          <div className="encargado-nombre">
+            <label htmlFor="nombresApellidosResponsable" className="form-label">
+              Nombres y Apellidos del responsable
+            </label>
+            <input
+              type="text"
+              id="nombresApellidosResponsable"
+              className="form-control form-control-sm"
+              name="nombresApellidosResponsable"
+              value={encargado.nombresApellidosResponsable}
+              onChange={onEncargadoChange}
+            />
+          </div>
+
+          <div className="encargado-dni">
+            <label htmlFor="dniResponsable" className="form-label">DNI</label>
+            <input
+              type="text"
+              id="dniResponsable"
+              className="form-control form-control-sm"
+              name="dniResponsable"
+              value={encargado.dniResponsable}
+              onChange={onEncargadoChange}
+            />
           </div>
         </div>
       </form>

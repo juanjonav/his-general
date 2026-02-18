@@ -16,7 +16,6 @@ function App() {
 
   const { route, goTo } = useHashRoute()
   const [authReady, setAuthReady] = useState(false)
-  const [perfilVisible, setPerfilVisible] = useState(false)
   const [userDoc, setUserDoc] = useState(null)
   const [perfilError, setPerfilError] = useState('')
 
@@ -76,18 +75,14 @@ function App() {
   return (
     <>
       <AppNav
-        onGoTo={(nextRoute) => {
-          setPerfilVisible(false)
-          goTo(nextRoute)
-        }}
-        onOpenPerfil={() => setPerfilVisible(true)}
+        onGoTo={(nextRoute) => goTo(nextRoute)}
         onSignOut={() => signOut(auth)}
       />
 
-      {perfilVisible ? <UsuarioPerfil userAuth={user} userDoc={userDoc} error={perfilError} /> : null}
+      <UsuarioPerfil userAuth={user} userDoc={userDoc} error={perfilError} />
 
       {route === 'formulario' ? (
-        <FormularioPaciente />
+        <FormularioPaciente userAuth={user} userDoc={userDoc} />
       ) : (
         <Suspense fallback={<section>Cargando informe...</section>}>
           <InformeEstadisticas />
