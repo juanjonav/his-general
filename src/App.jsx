@@ -75,18 +75,22 @@ function App() {
   return (
     <>
       <AppNav
+        hospital={userDoc?.hospitalId || 'Hospital no asignado'}
+        activeRoute={route}
         onGoTo={(nextRoute) => goTo(nextRoute)}
+        onOpenPerfil={() => goTo('estadisticas')}
         onSignOut={() => signOut(auth)}
       />
-
-      <UsuarioPerfil userAuth={user} userDoc={userDoc} error={perfilError} />
 
       {route === 'formulario' ? (
         <FormularioPaciente userAuth={user} userDoc={userDoc} />
       ) : (
-        <Suspense fallback={<section>Cargando informe...</section>}>
-          <InformeEstadisticas />
-        </Suspense>
+        <>
+          <UsuarioPerfil userAuth={user} userDoc={userDoc} error={perfilError} />
+          <Suspense fallback={<section>Cargando informe...</section>}>
+            <InformeEstadisticas />
+          </Suspense>
+        </>
       )}
     </>
   )

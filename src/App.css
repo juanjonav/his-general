@@ -144,6 +144,116 @@ select:focus {
   background: #b91c1c;
 }
 
+.app-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 14px 18px;
+  border-radius: 14px;
+  border: 1px solid #1e4f92;
+  background: linear-gradient(120deg, #0b4f99 0%, #0a3f7d 100%);
+  color: #ffffff;
+}
+
+.app-nav-brand {
+  font-size: 28px;
+  font-weight: 800;
+  line-height: 1.1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.app-nav-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.app-nav-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+}
+
+.app-nav-btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.app-nav-btn.is-active {
+  background: #ffffff;
+  color: #0a3f7d;
+  border-color: #ffffff;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.22);
+}
+
+.perfil-dropdown {
+  position: relative;
+}
+
+.perfil-dropdown summary {
+  list-style: none;
+}
+
+.perfil-dropdown summary::-webkit-details-marker {
+  display: none;
+}
+
+.perfil-dropdown-trigger {
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.16);
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+
+.perfil-dropdown-trigger img {
+  width: 20px;
+  height: 20px;
+}
+
+.perfil-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 170px;
+  border: 1px solid #dbe3ef;
+  border-radius: 10px;
+  background: #ffffff;
+  box-shadow: 0 10px 24px rgba(10, 63, 125, 0.2);
+  padding: 6px;
+  z-index: 20;
+}
+
+.perfil-dropdown:not([open]) .perfil-dropdown-menu {
+  display: none;
+}
+
+.perfil-dropdown-item {
+  display: block;
+  width: 100%;
+  text-align: left;
+  border: 0;
+  background: transparent;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 13px;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.perfil-dropdown-item:hover {
+  background: #eef3fb;
+}
+
+.perfil-dropdown-item.danger {
+  color: #b91c1c;
+}
+
 .text-end {
   text-align: right;
 }
@@ -287,6 +397,20 @@ section {
 
   .row {
     gap: 10px;
+  }
+
+  .app-nav {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .app-nav-brand {
+    font-size: 22px;
+    white-space: normal;
+  }
+
+  .app-nav-actions {
+    justify-content: space-between;
   }
 
   .perfil-row {

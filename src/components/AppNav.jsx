@@ -1,23 +1,42 @@
-export default function AppNav({ onGoTo, onSignOut }) {
+export default function AppNav({ hospital, activeRoute, onGoTo, onOpenPerfil, onSignOut }) {
   return (
-    <section className="mb-5">
-      <div className="row">
-        <div className="col-md-2">
-          <button type="button" className="btn btn-primary btn-sm" onClick={() => onGoTo('formulario')}>
-            Ir a Formulario
-          </button>
-        </div>
-        <div className="col-md-2">
-          <button type="button" className="btn btn-secondary btn-sm" onClick={() => onGoTo('estadisticas')}>
-            Ver estadisticas
-          </button>
-        </div>
-        <div className="col-md-2">
-          <button type="button" className="btn btn-danger btn-sm" onClick={onSignOut}>
-            Cerrar sesion
-          </button>
-        </div>
+    <nav className="app-nav mb-5">
+      <div className="app-nav-brand" title={hospital}>
+        {hospital}
       </div>
-    </section>
+
+      <div className="app-nav-actions">
+        <button
+          type="button"
+          className={`btn btn-sm app-nav-btn ${activeRoute === 'formulario' ? 'is-active' : ''}`}
+          onClick={() => onGoTo('formulario')}
+        >
+          Formulario
+        </button>
+
+        <button
+          type="button"
+          className={`btn btn-sm app-nav-btn ${activeRoute === 'estadisticas' ? 'is-active' : ''}`}
+          onClick={() => onGoTo('estadisticas')}
+        >
+          Estadisticas
+        </button>
+
+        <details className="perfil-dropdown">
+          <summary className="perfil-dropdown-trigger" aria-label="Perfil">
+            <img src="/usuario.svg" alt="Perfil" />
+          </summary>
+
+          <div className="perfil-dropdown-menu">
+            <button type="button" className="perfil-dropdown-item" onClick={onOpenPerfil}>
+              Ver perfil
+            </button>
+            <button type="button" className="perfil-dropdown-item danger" onClick={onSignOut}>
+              Cerrar sesion
+            </button>
+          </div>
+        </details>
+      </div>
+    </nav>
   )
 }

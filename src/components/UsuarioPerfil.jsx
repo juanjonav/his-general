@@ -8,7 +8,7 @@ export default function UsuarioPerfil({ userAuth, userDoc, error }) {
   }
 
   return (
-    <section className="perfil-card">
+    <section id="perfil-usuario" className="perfil-card">
       <div className="perfil-row">
         <div className="perfil-item">
           <span className="perfil-label">Nombre</span>
