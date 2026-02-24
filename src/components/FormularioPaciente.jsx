@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { doc, increment, setDoc } from 'firebase/firestore'
+//cie 10
 import codigosCie from '../data/codigos_cie.json'
 import { generarExcelHis } from '../services/crearHis'
 import { generarExcelLista } from '../services/crearLista'
