@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { doc, increment, setDoc } from 'firebase/firestore'
 //cie 10
 import codigosCie from '../data/codigos_cie.json'
@@ -112,6 +112,10 @@ export default function FormularioPaciente({ userAuth, userDoc }) {
   const [paciente, setPaciente] = useState(initialPaciente)
   const [pacientes, setPacientes] = useState([])
   const [isInitialized, setIsInitialized] = useState(false)
+  const ultimoEnvioEstadisticasRef = useRef({
+    firma: '',
+    enviadoEn: 0,
+  })
 
   useEffect(() => {
     const guardados = localStorage.getItem(PACIENTES_KEY)
@@ -301,6 +305,19 @@ export default function FormularioPaciente({ userAuth, userDoc }) {
         return
       }
 
+      const firmaEnvio = JSON.stringify({
+        uid,
+        mes,
+        pacientes,
+      })
+      const ahora = Date.now()
+      const ultimoEnvio = ultimoEnvioEstadisticasRef.current
+
+      if (ultimoEnvio.firma === firmaEnvio && ahora - ultimoEnvio.enviadoEn < 30000) {
+        alert('Esta estadistica ya fue enviada recientemente.')
+        return
+      }
+
       const docRef = doc(db, 'usuarios', uid, 'estadisticas', '2026', 'meses', mes)
       const acumulado = {}
 
@@ -332,6 +349,10 @@ export default function FormularioPaciente({ userAuth, userDoc }) {
       }
 
       await setDoc(docRef, actualizacion, { merge: true })
+      ultimoEnvioEstadisticasRef.current = {
+        firma: firmaEnvio,
+        enviadoEn: Date.now(),
+      }
       alert(`Estadísticas guardadas para ${mesSeleccionado}`)
     } catch (error) {
       console.error('Error al guardar estadísticas:', error)
