@@ -63,6 +63,10 @@ function obtenerTotalesColumnas(matrix) {
 
 function TablaBloque({ titulo, totalTitulo, matrix }) {
   const totales = useMemo(() => obtenerTotalesColumnas(matrix), [matrix])
+  const avanceMesTotal = useMemo(
+    () => totales.reduce((acc, valor) => acc + (Number(valor) || 0), 0),
+    [totales],
+  )
 
   return (
     <div className="w-full overflow-x-auto border border-gray-300 rounded-lg shadow-sm">
@@ -131,16 +135,12 @@ function TablaBloque({ titulo, totalTitulo, matrix }) {
                 {valor}
               </td>
             ))}
-            {/* Celdas vacías para las últimas 6 columnas de totales si no hay datos calculados para ellas en 'totales' 
-                El array 'totales' viene de obtenerTotalesColumnas(matrix) que devuelve 24 columnas.
-                Faltan las 6 columnas de la derecha (Meta, Avance, Acum, F, M, Total).
-                Asumiré que deben estar vacías o calcularse, pero por ahora renderizo celdas vacías para mantener la estructura. */}
-            <td className="border border-gray-300 px-1 py-1"></td>
-            <td className="border border-gray-300 px-1 py-1"></td>
-            <td className="border border-gray-300 px-1 py-1"></td>
-            <td className="border border-gray-300 px-1 py-1"></td>
-            <td className="border border-gray-300 px-1 py-1"></td>
-            <td className="border border-gray-300 px-1 py-1"></td>
+            <td className="border border-gray-300 px-1 py-1 text-center text-xs">0</td>
+            <td className="border border-gray-300 px-1 py-1 text-center text-xs">{avanceMesTotal}</td>
+            <td className="border border-gray-300 px-1 py-1 text-center text-xs">0</td>
+            <td className="border border-gray-300 px-1 py-1 text-center text-xs">0</td>
+            <td className="border border-gray-300 px-1 py-1 text-center text-xs">0</td>
+            <td className="border border-gray-300 px-1 py-1 text-center text-xs">0</td>
           </tr>
 
           {/* Filas de Datos */}
