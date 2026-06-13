@@ -313,7 +313,7 @@ export default function FormularioPaciente({ userAuth, userDoc }) {
       const ahora = Date.now()
       const ultimoEnvio = ultimoEnvioEstadisticasRef.current
 
-      if (ultimoEnvio.firma === firmaEnvio && ahora - ultimoEnvio.enviadoEn < 30000) {
+      if (ultimoEnvio.firma === firmaEnvio && ahora - ultimoEnvio.enviadoEn < 300000) {
         alert('Esta estadistica ya fue enviada recientemente.')
         return
       }
